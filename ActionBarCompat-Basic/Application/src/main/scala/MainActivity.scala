@@ -71,10 +71,12 @@ class MainActivity extends ActionBarActivity {
       }
       case R.id.menu_location => {
         // Here we might call LocationManager.requestLocationUpdates()
+        Toast.makeText(getApplicationContext(), "Location!", Toast.LENGTH_SHORT).show()
         true
       }
       case R.id.menu_settings => {
         // Here we would open up our settings activity
+        Toast.makeText(getApplicationContext(), "Settings!", Toast.LENGTH_SHORT).show()
         true
       }
     }

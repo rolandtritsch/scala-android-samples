@@ -12,7 +12,7 @@ buildscript {
 	}
 }
 
-//apply plugin: "ensime"
+apply plugin: "ensime"
 apply plugin: "com.android.application"
 apply plugin: "android-command"
 apply plugin: "jp.leafytree.android-scala"

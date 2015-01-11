@@ -60,6 +60,7 @@ android {
     }
 
     lintOptions {
-       lintConfig file("../lint.xml")
+        absolutePaths false
+        lintConfig file("lint.xml")
     }
 }

@@ -2,4 +2,4 @@
 **/build/
 
 **/.ensime
-**/.ensime_cache/
+**/.ensime_cache.d/

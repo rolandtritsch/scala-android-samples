@@ -14,7 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scaleType="fitCenter" />
+    android:scaleType="fitCenter"
+    android:contentDescription="@string/imageDesc"
+/>

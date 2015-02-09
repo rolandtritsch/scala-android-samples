@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-->
+<lint>
+  <issue id="InvalidPackage">
+    <ignore path="/Users/roland/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.4/734ac63e470706015ea786f7780c80db49f001a4/scala-library-2.11.4.jar"/>
+  </issue>
+
+  <issue id="UnusedResources">
+    <ignore path="src/main/res/layout/activity_main.xml"/>
+    <ignore path="src/main/res/layout/details.xml"/>
+    <ignore path="src/main/res/layout/grid.xml"/>
+    <ignore path="src/main/res/layout/grid_item.xml"/>
+    <ignore path="src/main/res/values/strings.xml"/>
+    <ignore path="src/main/res/values/template-dimens.xml"/>
+  </issue>
+
+  <issue id="IconDensities">
+    <ignore path="src/main/res/drawable-mdpi"/>
+    <ignore path="src/main/res/drawable-xhdpi"/>
+    <ignore path="src/main/res/drawable-xxhdpi"/>
+  </issue>
+
+  <issue id="IconMissingDensityFolder" severity="ignore">
+  </issue>
+</lint>

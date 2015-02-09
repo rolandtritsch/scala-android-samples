@@ -13,32 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.common.logger;
+package com.example.android.common.logger
 
-import android.util.Log;
+import android.util.Log
 
 /**
  * Helper class which wraps Android's native Log utility in the Logger interface.  This way
  * normal DDMS output can be one of the many targets receiving and outputting logs simultaneously.
  */
-public class LogWrapper implements LogNode {
-
+class LogWrapper extends LogNode {
     // For piping:  The next node to receive Log data after this one has done its work.
-    private LogNode mNext;
-
-    /**
-     * Returns the next LogNode in the linked list.
-     */
-    public LogNode getNext() {
-        return mNext;
-    }
-
-    /**
-     * Sets the LogNode data will be sent to..
-     */
-    public void setNext(LogNode node) {
-        mNext = node;
-    }
+    var mNext: LogNode = null
 
     /**
      * Prints data out to the console using Android's native log mechanism.
@@ -48,28 +33,24 @@ public class LogWrapper implements LogNode {
      * @param tr If an exception was thrown, this can be sent along for the logging facilities
      *           to extract and print useful information.
      */
-    @Override
-    public void println(int priority, String tag, String msg, Throwable tr) {
+    override def println(priority: Int, tag: String, msg: String, tr: Throwable): Unit = {
         // There actually are log methods that don't take a msg parameter.  For now,
         // if that's the case, just convert null to the empty string and move on.
-        String useMsg = msg;
-        if (useMsg == null) {
-            useMsg = "";
-        }
+        val msg1 = if(msg != null) msg else ""
 
         // If an exeption was provided, convert that exception to a usable string and attach
         // it to the end of the msg method.
-        if (tr != null) {
-            msg += "\n" + Log.getStackTraceString(tr);
-        }
+        val msg2 = if(tr != null) {
+            msg1 + "\n" + Log.getStackTraceString(tr)
+        } else msg1
 
-        // This is functionally identical to Log.x(tag, useMsg);
+        // This is functionally identical to Log.x(tag, useMsg)
         // For instance, if priority were Log.VERBOSE, this would be the same as Log.v(tag, useMsg)
-        Log.println(priority, tag, useMsg);
+        Log.println(priority, tag, msg2)
 
         // If this isn't the last node in the chain, move things along.
         if (mNext != null) {
-            mNext.println(priority, tag, msg, tr);
+            mNext.println(priority, tag, msg, tr)
         }
     }
 }

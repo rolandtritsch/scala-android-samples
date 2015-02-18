@@ -96,11 +96,11 @@ class MainActivity extends SampleActivityBase {
 
     // Filter strips out everything except the message text.
     val msgFilter = new MessageOnlyLogFilter()
-    logWrapper.next = msgFilter
+    logWrapper.setNext(msgFilter)
 
     // On screen logging via a fragment with a TextView.
     val logFragment = getSupportFragmentManager().findFragmentById(R.id.log_fragment).asInstanceOf[LogFragment]
-    msgFilter.next = logFragment.getLogView()
+    msgFilter.setNext(logFragment.getLogView())
 
     Log.i(MainActivity.TAG, "Ready")
   }

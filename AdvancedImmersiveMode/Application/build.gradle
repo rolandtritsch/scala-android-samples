@@ -18,7 +18,7 @@ apply plugin: "android-command"
 apply plugin: "ensime"
 
 ext {
-    scalaLibraryVersion = "2.11.4"
+    scalaLibraryVersion = "2.11.6"
     androidMinCompatVersion = 4
     androidSdkVersion = 21
     androidSupportVersion = androidSdkVersion + ".0.2"
@@ -26,6 +26,7 @@ ext {
 }
 
 ensime {
+    javaHome = "/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home"
     scalaVersion = scalaLibraryVersion
 }
 

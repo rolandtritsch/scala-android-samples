@@ -26,6 +26,7 @@ ext {
 }
 
 ensime {
+    javaHome = "/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home"
     scalaVersion = scalaLibraryVersion
 }
 
@@ -79,5 +80,5 @@ android {
 
 task debugMe {
   println "project.name >${project.name}<"
-  println "project.path >${project.path}<"
+  // println "project.path >${project.path}<"
 }

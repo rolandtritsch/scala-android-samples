@@ -1,1 +1,4 @@
 include 'Application'
+
+rootProject.name = 'ActionBarCompat-ListPopupMenu'
+rootProject.children.each {it.name = rootProject.name + '_' + it.name}

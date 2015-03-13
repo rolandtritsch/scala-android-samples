@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2013 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-package com.example.android.basicaccessibility;
+package com.example.android.basicaccessibility
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.app.Activity
+import android.os.Bundle
 
 /**
- * Basic activity class.
- *
- * <p>Responsible for rendering layout, and displaying some toasts to give buttons feedback.
- * There's nothing terribly interesting in this class. All the interesting stuff is in
- * res/layout/activity_main.xml and {@link DialView}.
- */
-public class MainActivity extends Activity {
-
-    /**
-     * Standard onCreate() implementation. Sets R.layout.activity_main as the layout.
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.sample_main);
-    }
+  * Basic activity class.
+  *
+  * <p>Responsible for rendering layout, and displaying some toasts to give buttons feedback.
+  * There's nothing terribly interesting in this class. All the interesting stuff is in
+  * res/layout/activity_main.xml and {@link DialView}.
+  */
+class MainActivity extends Activity {
+  /**
+    * Standard onCreate() implementation. Sets R.layout.activity_main as the layout.
+    */
+  override protected def onCreate(savedInstanceState: Bundle): Unit = {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.sample_main)
+  }
 }

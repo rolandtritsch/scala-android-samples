@@ -23,12 +23,16 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 
+import scala.collection.mutable
+
 object DialView {
-  private[this] val SELECTION_COUNT = 4
-  private[this] val FONT_SIZE = 40f
+  private val TAG = DialView.getClass().getName()
+  private val SELECTION_COUNT = 4
+  private val FONT_SIZE = 40f
 }
 
 /**
@@ -45,76 +49,63 @@ object DialView {
   * between 1 and 4. Each time the dial is clicked, the next position will be selected (modulo
   * the maximum number of positions).
   */
-class DialView extends View {
-  private[this] var mWidth: Float
-  private[this] var mHeight: Float
-  private[this] var mWidthPadded: Float
-  private[this] var mHeightPadded: Float
-  private[this] var mTextPaint: Paint
-  private[this] var mDialPaint: Paint
-  private[this] var mRadius: Float
-  private[this] var mActiveSelection: Int
+class DialView(context: Context, attrs: AttributeSet) extends View(context, attrs) {
+  // Paint styles used for rendering are created here, rather than at render-time. This
+  // is a performance optimization, since onDraw() will get called frequently.
+  mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG)
+  assert(mTextPaint != null, "mTextPaint cannot be null")
 
-  /**
-    * Constructor that is called when inflating a view from XML. This is called
-    * when a view is being constructed from an XML file, supplying attributes
-    * that were specified in the XML file.
-    *
-    * <p>In our case, this constructor just calls init().
-    *
-    * @param context The Context the view is running in, through which it can
-    *                access the current theme, resources, etc.
-    * @param attrs   The attributes of the XML tag that is inflating the view.
-    * @see #View(android.content.Context, android.util.AttributeSet, int)
-    */
-  def this(Context context, AttributeSet attrs) {
-    super(context, attrs)
-    init()
-  }
+  mTextPaint.setColor(Color.BLACK)
+  mTextPaint.setStyle(Paint.Style.FILL_AND_STROKE)
+  mTextPaint.setTextAlign(Paint.Align.CENTER)
+  mTextPaint.setTextSize(DialView.FONT_SIZE)
 
-  /**
-    * Helper method to initialize instance variables. Called by constructor.
-    */
-  private[this] void init() {
-    // Paint styles used for rendering are created here, rather than at render-time. This
-    // is a performance optimization, since onDraw() will get called frequently.
-    mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG)
-    mTextPaint.setColor(Color.BLACK)
-    mTextPaint.setStyle(Paint.Style.FILL_AND_STROKE)
-    mTextPaint.setTextAlign(Paint.Align.CENTER)
-    mTextPaint.setTextSize(DialView.FONT_SIZE)
+  mDialPaint = new Paint(Paint.ANTI_ALIAS_FLAG)
+  assert(mDialPaint != null, "mDialPaint cannot be null")
 
-    mDialPaint = new Paint(Paint.ANTI_ALIAS_FLAG)
-    mDialPaint.setColor(Color.GRAY)
+  mDialPaint.setColor(Color.GRAY)
 
-    // Initialize current selection. This will store where the dial's "indicator" is pointing.
-    mActiveSelection = 0
+  // Initialize current selection. This will store where the dial's "indicator" is pointing.
+  mActiveSelection = 0
 
-    // Setup onClick listener for this view. Rotates between each of the different selection
-    // states on each click.
-    //
-    // Notice that we call sendAccessibilityEvent here. Some AccessibilityEvents are generated
-    // by the system. However, custom views will typically need to send events manually as the
-    // user interacts with the view. The type of event sent will vary, depending on the nature
-    // of the view and how the user interacts with it.
-    //
-    // In this case, we are sending TYPE_VIEW_SELECTED rather than TYPE_VIEW_CLICKED, because
-    // clicking on this view selects a new value.
-    //
-    // We will give our AccessibilityEvent further information about the state of the view in
-    // onPopulateAccessibilityEvent(), which will be called automatically by the system
-    // for each AccessibilityEvent.
-    setOnClickListener(new OnClickListener() {
-      override def onClick(v: View): Unit = {
-        // Rotate selection to the next valid choice.
-        mActiveSelection = (mActiveSelection + 1) % DialView.SELECTION_COUNT
-        // Send an AccessibilityEvent, since the user has interacted with the view.
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
-        // Redraw the entire view. (Inefficient, but this is sufficient for demonstration
-        // purposes.)
-        invalidate()
-      }
-    })
+  // Setup onClick listener for this view. Rotates between each of the different selection
+  // states on each click.
+  //
+  // Notice that we call sendAccessibilityEvent here. Some AccessibilityEvents are generated
+  // by the system. However, custom views will typically need to send events manually as the
+  // user interacts with the view. The type of event sent will vary, depending on the nature
+  // of the view and how the user interacts with it.
+  //
+  // In this case, we are sending TYPE_VIEW_SELECTED rather than TYPE_VIEW_CLICKED, because
+  // clicking on this view selects a new value.
+  //
+  // We will give our AccessibilityEvent further information about the state of the view in
+  // onPopulateAccessibilityEvent(), which will be called automatically by the system
+  // for each AccessibilityEvent.
+  setOnClickListener(new View.OnClickListener() {
+    override def onClick(v: View): Unit = {
+      // Rotate selection to the next valid choice.
+      mActiveSelection = (mActiveSelection + 1) % DialView.SELECTION_COUNT
+      // Send an AccessibilityEvent, since the user has interacted with the view.
+      sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
+      // Redraw the entire view. (Inefficient, but this is sufficient for demonstration
+      // purposes.)
+      invalidate()
+    }
+  })
+
+  private[this] var mWidth: Float = 0f
+  private[this] var mHeight: Float = 0f
+  private[this] var mWidthPadded: Float = 0f
+  private[this] var mHeightPadded: Float = 0f
+  private[this] var mTextPaint: Paint = null
+  private[this] var mDialPaint: Paint = null
+  private[this] var mRadius: Float = 0f
+  private[this] var mActiveSelection: Int = 0
+
+  private[this] def init(): Unit = {
+    Log.v(DialView.TAG, s"Enter - init()")
+    Log.v(DialView.TAG, s"Leave - init()")
   }
 
   /**
@@ -147,7 +138,7 @@ class DialView extends View {
     // other TTS engines.
     if(eventType == AccessibilityEvent.TYPE_VIEW_SELECTED || eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
       event.getText().add(s"Mode selected: ${Integer.toString(mActiveSelection + 1)}.")
-      event.setItemCount(DrawView.SELECTION_COUNT)
+      event.setItemCount(DialView.SELECTION_COUNT)
       event.setCurrentItemIndex(mActiveSelection)
     }
 
@@ -193,25 +184,28 @@ class DialView extends View {
     *
     * @param canvas the canvas on which the background will be drawn
     */
-  override protected onDraw(canvas: Canvas): Unit = {
+  override protected def onDraw(canvas: Canvas): Unit = {
     super.onDraw(canvas)
+    require(mTextPaint != null, "mTextPaint cannot be null")
+    require(mDialPaint != null, "mDialPaint cannot be null")
+
     // Draw dial
-    canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius.toFloat, mDialPaint)
+    canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mDialPaint)
 
     // Draw text labels
     val labelRadius = mRadius + 10
-    for(i <- 0 until SELECTION_COUNT) {
+    for(i <- 0 until DialView.SELECTION_COUNT) {
       val xyData = computeXYForPosition(i, labelRadius)
-      val x = xyData[0]
-      val y = xyData[1]
+      val x = xyData(0)
+      val y = xyData(1)
       canvas.drawText((i + 1).toString, x, y, mTextPaint)
     }
 
     // Draw indicator mark
     val markerRadius = mRadius - 35
     val xyData = computeXYForPosition(mActiveSelection, markerRadius)
-    val x = xyData[0]
-    val y = xyData[1]
+    val x = xyData(0)
+    val y = xyData(1)
     canvas.drawCircle(x, y, 20, mTextPaint)
   }
 
@@ -224,11 +218,11 @@ class DialView extends View {
     * @return 2-element array. Element 0 is X-coordinate, element 1 is Y-coordinate.
     */
   private[this] def computeXYForPosition(pos: Int, radius: Float): Array[Float] = {
-    val result = new mutable.ArrayBuffer(0.0, 0.0)
+    val result = new mutable.ArrayBuffer[Float]()
     val startAngle = Math.PI * (9 / 8d)   // Angles are in radiansq
     val angle = startAngle + (pos * (Math.PI / 4))
     result(0) = ((radius * Math.cos(angle)) + (mWidth / 2)).toFloat
     result(1) = ((radius * Math.sin(angle)) + (mHeight / 2)).toFloat
-    result
+    result.toArray
   }
 }

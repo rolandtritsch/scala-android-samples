@@ -50,6 +50,15 @@ object DialView {
   * the maximum number of positions).
   */
 class DialView(context: Context, attrs: AttributeSet) extends View(context, attrs) {
+  private[this] var mWidth: Float = 0f
+  private[this] var mHeight: Float = 0f
+  private[this] var mWidthPadded: Float = 0f
+  private[this] var mHeightPadded: Float = 0f
+  private[this] var mTextPaint: Paint = null
+  private[this] var mDialPaint: Paint = null
+  private[this] var mRadius: Float = 0f
+  private[this] var mActiveSelection: Int = 0
+
   // Paint styles used for rendering are created here, rather than at render-time. This
   // is a performance optimization, since onDraw() will get called frequently.
   mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG)
@@ -93,15 +102,6 @@ class DialView(context: Context, attrs: AttributeSet) extends View(context, attr
       invalidate()
     }
   })
-
-  private[this] var mWidth: Float = 0f
-  private[this] var mHeight: Float = 0f
-  private[this] var mWidthPadded: Float = 0f
-  private[this] var mHeightPadded: Float = 0f
-  private[this] var mTextPaint: Paint = null
-  private[this] var mDialPaint: Paint = null
-  private[this] var mRadius: Float = 0f
-  private[this] var mActiveSelection: Int = 0
 
   private[this] def init(): Unit = {
     Log.v(DialView.TAG, s"Enter - init()")

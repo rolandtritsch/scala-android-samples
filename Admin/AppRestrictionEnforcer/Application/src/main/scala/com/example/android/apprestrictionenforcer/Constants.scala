@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package com.example.android.apprestrictionenforcer;
+package com.example.android.apprestrictionenforcer
 
-public interface Constants {
-
-    /**
-     * Package name of the AppRestrictionSchema sample.
-     */
-    public static final String PACKAGE_NAME_APP_RESTRICTION_SCHEMA
-            = "com.example.android.apprestrictionschema";
-
+object Constants {
+  /**
+    * Package name of the AppRestrictionSchema sample.
+    */
+  val PACKAGE_NAME_APP_RESTRICTION_SCHEMA = "com.example.android.apprestrictionschema"
 }

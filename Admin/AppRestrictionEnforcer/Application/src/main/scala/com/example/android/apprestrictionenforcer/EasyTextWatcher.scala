@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package com.example.android.apprestrictionenforcer;
+package com.example.android.apprestrictionenforcer
 
-import android.text.TextWatcher;
+import android.text.TextWatcher
 
 /**
- * This is a wrapper around {@link TextWatcher} that overrides
- * {@link TextWatcher#beforeTextChanged(CharSequence, int, int, int)} and
- * {@link TextWatcher#onTextChanged(CharSequence, int, int, int)} with empty bodies.
- */
-public abstract class EasyTextWatcher implements TextWatcher {
+  * This is a wrapper around {@link TextWatcher} that overrides
+  * {@link TextWatcher#beforeTextChanged(CharSequence, int, int, int)} and
+  * {@link TextWatcher#onTextChanged(CharSequence, int, int, int)} with empty bodies.
+  */
+abstract class EasyTextWatcher extends TextWatcher {
+  override def beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int): Unit = {
+    // Do nothing
+  }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // Do nothing
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        // Do nothing
-    }
-
+  override def onTextChanged(s: CharSequence, start: Int, before: Int, count: Int): Unit = {
+    // Do nothing
+  }
 }
